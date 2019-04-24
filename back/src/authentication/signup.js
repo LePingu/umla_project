@@ -13,7 +13,7 @@ async function signup(req, res) {
             password: passwordHash.generate(req.body.password)
         }
         try {
-            const findUser = await User.findOne({email: req.body.email}).exec();
+            const findUser = await User.findOne({email: user.email}).exec();
             console.log(findUser);
             if (findUser == null){
                 try{

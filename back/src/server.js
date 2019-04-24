@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 var cors = require('cors')
 
 //Connexion à la base de donnée
-mongoose.connect('mongodb://localhost/db').then(() => {
+mongoose.connect("mongodb://localhost:27017/YourDB", { useNewUrlParser: true }).then(() => {
     console.log('Connected to mongoDB')
 }).catch(e => {
     console.log('Error while DB connecting');
