@@ -1,4 +1,4 @@
-const User = require('../../model/userModel.js');
+const User = require('../model/userModel.js');
 const passwordHash = require("password-hash");
 
 async function signup(req, res) {
@@ -13,7 +13,7 @@ async function signup(req, res) {
             password: passwordHash.generate(req.body.password)
         }
         try {
-            const findUser = await User.findOne({email: user.email}).exec();
+            const findUser = await User.findOne({email: req.body.email}).exec();
             console.log(findUser);
             if (findUser == null){
                 try{

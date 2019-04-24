@@ -1,14 +1,23 @@
 //import dependencies
 const express = require('express');
 const bodyParser = require('body-parser');
-const helmet = require('helmet');
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+//const helmet = require('helmet');
+var cors = require('cors')
+
+//Connexion à la base de donnée
+mongoose.connect('mongodb://localhost/db').then(() => {
+    console.log('Connected to mongoDB')
+}).catch(e => {
+    console.log('Error while DB connecting');
+    console.log(e);
+});
 
 // define the Express app
 const app = express();
 
 // enhance your app security with Helmet
-app.use(helmet());
+//app.use(helmet());
 
 // enable all CORS requests
 app.use(cors());

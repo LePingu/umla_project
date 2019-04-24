@@ -1,6 +1,6 @@
-const User = require('../../model/userModel.js');
+const User = require('../model/userModel.js');
 
-function login(req, res) {
+async function login(req, res) {
     if (!req.body.email || !req.body.password) {
         //Le cas où l'email ou bien le password ne serait pas soumit ou nul
         res.status(400).json({
@@ -8,7 +8,7 @@ function login(req, res) {
         })
     } else {
         try {
-            const findUser = await User.findOne({email: user.email}).exec();
+            const findUser = await User.findOne({email: req.body.email}).exec();
             console.log(findUser);
             if (!findUser){
                 res.status(401).json({

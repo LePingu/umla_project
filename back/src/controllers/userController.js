@@ -1,7 +1,7 @@
-const login = require('./athentication/login.js');
-const signup = require('./athentication/signup.js');
+const login = require('../authentication/login.js');
+const signup = require('../authentication/signup.js');
 
 module.exports = function (app) {
-    app.post('/login',login);
-    app.post('/signup',signup);
+    app.post('/login',login.login);
+    app.post('/signup',signup.signup);
 }

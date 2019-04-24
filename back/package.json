@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/server.js"
+    "start": "node --inspect src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +15,8 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "helmet": "^3.16.0",
-    "mongoose": "^5.4.20"
+    "jwt-simple": "^0.5.6",
+    "mongoose": "^5.4.20",
+    "password-hash": "^1.2.2"
   }
 }

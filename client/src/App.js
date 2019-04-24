@@ -1,28 +1,25 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Register } from './authentication/Register';
+import { Route, Switch } from 'react-router-dom';
+import { Dashboard } from './authentication/Dashboard.js';
+import { Login } from './authentication/Login.js';
+import { PrivateRoute } from './routing/PrivateRoute.js';
 import './App.css';
 
 class App extends Component {
   render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+  return (
+  <div className="App">
+      <div className="App-content">
+          <Switch>  
+              <Route exact path="/" component={Login}/>
+              <Route exact path ="/signup" component={Register}/>
+              <PrivateRoute path='/dashboard' component={Dashboard} />
+          </Switch>
       </div>
-    );
-  }
+  </div>
+  );
+}
 }
 
 export default App;
