@@ -1,49 +1,41 @@
 import React from 'react'
-import shuffle from 'lodash/shuffle'
-import HallOfFame, { FAKE_HOF } from './HallOfFame'
+import PropTypes from 'prop-types'
 
 import './Card.css'
 
+
 const HIDDEN_SYMBOL = '❓'
-const SIDE = 6
-const SYMBOLS = '😀🎉💖🎩🐶🐱🦄🐬🌍🌛🌞💫🍎🍌🍓🍐🍟🍿'
 
-const Card = ({ card, feedback, onClick }) => (
-    <div className={`card ${feedback}`} onClick={() => onClick(card, feedback)}>
-      <span className="symbol">
-        {feedback === 'hidden' ? HIDDEN_SYMBOL : card}
-      </span>
-    </div>
-  )
-
-var cards = ({}) => {
-    const result = []
-    const size = SIDE * SIDE
-    const candidates = shuffle(SYMBOLS)
-    while (result.length < size) {
-      const card = candidates.pop()
-      result.push(card, card)
-    }
-    return shuffle(result)
+function handleCardClick(feedback) {
+    console.log(feedback, 'clicked');
   }
 
-function handleCardClick(card, feedback) {
-    console.log(feedback, 'clicked')
-  }
-const won = true;
+class Card extends React.Component {
 
-export class CardGame extends React.Component {
-    render() {
-        return (
-            <div className="memory">
-        <Card card="😀" feedback="hidden" onClick={handleCardClick} />
-        <Card card="🎉" feedback="justMatched" onClick={handleCardClick} />
-        <Card card="💖" feedback="justMismatched" onClick={handleCardClick} />
-        <Card card="🎩" feedback="visible" onClick={handleCardClick} />
-        <Card card="🐶" feedback="hidden" onClick={handleCardClick} />
-        <Card card="🐱" feedback="justMatched" onClick={handleCardClick} />
-        {won && <HallOfFame entries={FAKE_HOF} />}
-      </div>
-        )
+    constructor(props) {
+        super(props);
+        handleCardClick = handleCardClick.bind(this);
       }
+
+    static propTypes = {
+        card: PropTypes.string.isRequired,
+        feedback: PropTypes.oneOf([
+            'hidden',
+            'justMatched',
+            'justMismatched',
+            'visible',
+        ]).isRequired,
+        index: PropTypes.number.isRequired
+    }
+    render(){
+        return(
+            <div className={`card ${this.props.feedback}`} onClick={() => handleCardClick(this.props.index)}>
+                <span className="symbol">
+                    {this.props.feedback === 'hidden' ? HIDDEN_SYMBOL : this.props.card}
+                </span>
+            </div>
+        )
+    }
 }
+
+export default Card;

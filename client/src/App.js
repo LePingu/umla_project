@@ -3,7 +3,7 @@ import { Register } from './authentication/Register';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import { Dashboard } from './authentication/Dashboard.js';
 import { Login } from './authentication/Login.js';
-import { CardGame } from './card/Card.js';
+import CardGame from './card/CardGame.js';
 import { PrivateRoute } from './routing/PrivateRoute.js';
 import './App.css';
 
