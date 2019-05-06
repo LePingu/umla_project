@@ -1,41 +1,82 @@
-version: "2"
+version: "3"
 services:
-    client:
-        image: node:10.15
-        restart: always
+
+    ########################
+    #  Node Back Container #
+    ########################
+
+    back:
+        build: 
+            context: ./back
+            dockerfile: dockerfile
+        image: umla_back
+        container_name: umla_back
+        restart: unless-stopped
+        env_file: .env
+        environment:
+            - MONGO_USERNAME=$MONGO_USERNAME
+            - MONGO_PASSWORD=$MONGO_PASSWORD
+            - MONGO_HOSTNAME=db
+            - MONGO_PORT=$MONGO_PORT
+            - MONGO_DB=$MONGO_DB
+            - API_HOST=${API_HOST}
+            - APP_SERVER_PORT=${APP_SERVER_PORT}
+        expose:
+            - ${APP_SERVER_PORT}
         ports:
-            - "3000:3000"
-        working_dir: /client/src/app
+            - ${APP_SERVER_PORT}:${APP_SERVER_PORT}
         volumes:
-            - ./client:/client/src/app
+            - ./back:/umla/app/back/
+            - ./back/node_modules:/umla/app/back/node_modules
+        networks:
+            - app-network
+        #command: ./wait-for.sh db:27017
+    
+    #######################
+    #  Mongo db Container #
+    #######################
+    
+    db:
+        image: mongo:4.1.8-xenial
+        container_name: db
+        restart: unless-stopped
+        env_file: .env
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME
+            - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
+        volumes:
+            - dbdata:/data/db
+        networks:
+            - app-network
+    ####################
+    #  React Container #
+    ####################
+    
+    client:
+        build: 
+            context: ./client
+            dockerfile: dockerfile
+        image: umla_client
+        container_name: umla_client
+        restart: unless-stopped
+        environment:
+            - REACT_APP_PORT=${REACT_APP_PORT}
+        expose:
+            - ${REACT_APP_PORT}
+        ports:
+            - ${REACT_APP_PORT}:${REACT_APP_PORT}
+        volumes:
+            - ./client:/umla/app/client/
+            - ./client/node_modules:/umla/app/client/node_modules
         entrypoint: ["npm", "start"]
         links:
-            - api
+            - back
         networks:
-            - webappnetwork
-    api:
-        image: back
-        restart: always
-        ports:
-            - "1337:1337"
-        volumes:
-            - ./api:/api
-            - /api/node_modules
-        depends_on:
-            - mongodb
-        networks:
-            - webappnetwork
-    mongodb:
-        image: mongo
-        restart: always
-        container_name: mongodb
-        volumes:
-            - ./data-node:/data/db
-        ports:
-            - 27017:27017
-        command: mongod --noauth --smallfiles
-        networks:
-            - webappnetwork
+            - app-network
 networks:
-    webappnetwork:
+    app-network:
         driver: bridge
+
+volumes:
+  dbdata:
+  node_modules: 
