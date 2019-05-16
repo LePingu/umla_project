@@ -11,11 +11,13 @@ pipeline {
     stages {
         stage('Build') { 
             steps {
+                sh 'cd client'
                 sh 'npm install' 
             }
         }
         stage('Test') {
             steps {
+                sh 'chmod +x test.sh'
                 sh './jenkins/scripts/test.sh'
             }
         }
